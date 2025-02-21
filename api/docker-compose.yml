@@ -20,4 +20,4 @@ services:
     
 networks:
   connect:
-    name: fcahandbookconnect
+    name: dddconnect
