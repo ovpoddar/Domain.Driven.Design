@@ -24,4 +24,9 @@
 		<Folder Include="Database\Repositories\" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>DDD.Migrator</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 </Project>

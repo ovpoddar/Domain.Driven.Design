@@ -1,9 +1,12 @@
 using DDD.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.AddDatabaseLogging(configuration);
 
 builder.Services
-    .AddInfrastructure(builder.Configuration);
+    .AddApiServicesConfiguration(configuration)
 
 var app = builder.Build();
 
