@@ -10,13 +10,17 @@ namespace DDD.Infrastructure;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration configuration, string? migrationAssemblyName = null)
     {
         var sqlConnectionString = configuration.GetConnectionString("msSQLDb")
-            ?? throw new ApplicationException("msSQLDb Connection not found.");
+            ?? throw new ApplicationException("msSQLDb connection propriety is not found in appsettings.json file.");
         service.AddDbContext<ApplicationDbContext>(option =>
-            option.UseSqlServer(sqlConnectionString, a => a.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
-        );
+        {
+            option.UseSqlServer(sqlConnectionString,
+                string.IsNullOrWhiteSpace(migrationAssemblyName)
+                    ? null
+                    : a => a.MigrationsAssembly(migrationAssemblyName));
+        });
         service.AddScoped(typeof(IDatabaseConnectionBase<>), typeof(DatabaseConnectionBase<>));
         service.RegisterRepositories();
 
