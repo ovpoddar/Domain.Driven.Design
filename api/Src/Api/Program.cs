@@ -1,8 +1,7 @@
 using DDD.Api.Extensions;
-using DDD.Presentation;
 using DDD.Application;
 using DDD.Infrastructure;
-using DDD.Domain.Infrastructure;
+using DDD.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -19,4 +18,5 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseCors();
+app.MapControllers();
 app.Run();

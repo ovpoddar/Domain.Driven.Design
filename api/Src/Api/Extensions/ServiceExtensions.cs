@@ -1,8 +1,6 @@
 ﻿using DDD.Domain.Infrastructure;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using System;
-using System.Configuration;
 
 namespace DDD.Api.Extensions;
 
@@ -35,6 +33,9 @@ public static class ServiceExtensions
             });
         }
 
+        service
+            .AddControllers()
+            .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
         return service;
     }
 
@@ -47,7 +48,6 @@ public static class ServiceExtensions
     /// <exception cref="ApplicationException">Thrown if the connection string is not found in the configuration.</exception>
     public static WebApplicationBuilder AddDatabaseLogging(this WebApplicationBuilder builder, bool isOnlyLogger = true)
     {
-
         var connectionString = builder.Configuration.GetConnectionString("msSQLDbConnection")
             ?? throw new ApplicationException("msSQLDbConnection connection propriety is not found in appsettings.json file.");
         var sink = new MSSqlServerSinkOptions()
