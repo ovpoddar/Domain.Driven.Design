@@ -14,6 +14,8 @@ builder.Services
     .AddApplication(configuration)
     .AddInfrastructure(configuration);
 
+builder.Services.AddErrorHandlingPipeLine();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

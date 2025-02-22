@@ -1,6 +1,7 @@
 ﻿using DDD.Application.Abstractions.Behaviors;
+using DDD.Application.Exceptions;
 using FluentValidation;
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DDD.Application;
@@ -14,6 +15,8 @@ public static class ServiceExtensions
             configuration.RegisterServicesFromAssemblies(typeof(IAssemblyMarker).Assembly);
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+        service.AddValidatorsFromAssembly(typeof(IAssemblyMarker).Assembly);
+        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
 }

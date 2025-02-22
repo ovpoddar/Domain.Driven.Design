@@ -1,5 +1,6 @@
 ﻿using DDD.Application.Abstractions.Database;
 using DDD.Application.Abstractions.Redis;
+using DDD.Application.Exceptions;
 using DDD.Infrastructure.Configuration;
 using DDD.Infrastructure.Database;
 using DDD.Infrastructure.Redis;
@@ -37,6 +38,7 @@ public static class ServiceExtensions
             option.Configuration = redisConnectionString;
         });
         service.AddScoped<IRedisCache, RedisCache>();
+        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
 

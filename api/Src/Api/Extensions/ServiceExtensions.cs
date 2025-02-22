@@ -1,6 +1,11 @@
-﻿using DDD.Domain.Infrastructure;
+﻿using DDD.Api.Infrastructure.Exception;
+using DDD.Domain.Infrastructure;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using System.Reflection;
+using DDD.Application.Exceptions;
 
 namespace DDD.Api.Extensions;
 
@@ -36,6 +41,7 @@ public static class ServiceExtensions
         service
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
+        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
 
@@ -68,7 +74,12 @@ public static class ServiceExtensions
         if (isOnlyLogger) builder.Host.UseSerilog((_, configuration) => configuration = logger);
         else builder.Logging.AddSerilog(logger.CreateLogger());
         return builder;
-
     }
 
+    public static IServiceCollection AddErrorHandlingPipeLine(this IServiceCollection service)
+    {
+        service.AddExceptionHandler<GlobalExceptionErrorHandling>();
+        service.AddProblemDetails();
+        return service;
+    }
 }
