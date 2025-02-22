@@ -21,6 +21,10 @@ public static class ServiceExtensions
                     .AllowAnyHeader()
                     .AllowAnyMethod());
 
+                o.AddPolicy(CrossOriginConstants.AllowHostsOnly, p => p.WithOrigins(origins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
                 o.AddPolicy(CrossOriginConstants.AllowAllRequests, p => p.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
