@@ -41,6 +41,7 @@ public static class ServiceExtensions
         service
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
+        // todo:Fix this line adding the GlobalExceptionErrorHandling which should stop the processing
         service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
