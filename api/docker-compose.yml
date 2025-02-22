@@ -8,15 +8,26 @@ services:
     - ASPNETCORE_HTTP_PORTS=8080
     - ASPNETCORE_HTTPS_PORTS=8081
     ports:
-    - "42002:8080"
-    - "9000:8081"
+    - "9000:8080"
+    - "9001:8081"
     volumes:
     - ${USERPROFILE}/.aspnet/https:/https/
     - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
     - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
     - connect
+    depends_on: 
+    - ddd.database
 
+  ddd.database:
+    image: "mcr.microsoft.com/mssql/server:2019-CU13-ubuntu-20.04"
+    ports:
+    - 9002:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Pa55w0rd!."
+    networks:
+    - connect
     
 networks:
   connect:

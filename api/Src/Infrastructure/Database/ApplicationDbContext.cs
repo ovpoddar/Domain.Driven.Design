@@ -1,6 +1,4 @@
-﻿using DDD.Domain.Entities.LoggingEntity;
-using DDD.Infrastructure.Database.Configuration;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,11 +16,9 @@ internal class ApplicationDbContext : DbContext
     }
 
 
-    public DbSet<Logging> Logging { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfiguration(new LoggingConfiguration());
     }
 }

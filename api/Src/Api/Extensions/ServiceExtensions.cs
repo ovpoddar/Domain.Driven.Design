@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using System.Configuration;
 
 namespace DDD.Api.Extensions;
@@ -13,24 +14,35 @@ public static class ServiceExtensions
     }
 
     /// <summary>
-    /// Configure Serilog to log in to database and into output
+    /// Configures Serilog to log events to a SQL Server database and optionally to other outputs.
     /// </summary>
-    /// <param name="builder">Web Builder</param>
-    /// <returns><see cref="WebApplicationBuilder"/></returns>
-    public static WebApplicationBuilder AddDatabaseLogging(this WebApplicationBuilder builder, IConfiguration configuration)
+    /// <param name="builder">The web application builder.</param>
+    /// <param name="isOnlyLogger">If true, Serilog will be the only logger; otherwise, it will be added to the existing logging providers.</param>
+    /// <returns>The updated <see cref="WebApplicationBuilder"/>.</returns>
+    /// <exception cref="ApplicationException">Thrown if the connection string is not found in the configuration.</exception>
+    public static WebApplicationBuilder AddDatabaseLogging(this WebApplicationBuilder builder, bool isOnlyLogger = true)
     {
-        Log.Logger = new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .ReadFrom.Configuration(configuration)
-            .CreateLogger();
 
-        builder.Logging.ClearProviders()
-            .AddConfiguration(configuration.GetSection("Logging") ?? throw new ApplicationException("Logging section is not found in appsettings.json file."))
-            .AddConsole()
-            .AddDebug();
+        var connectionString = builder.Configuration.GetConnectionString("msSQLDbConnection")
+            ?? throw new ApplicationException("msSQLDbConnection connection propriety is not found in appsettings.json file.");
+        var sink = new MSSqlServerSinkOptions()
+        {
+            TableName = "Logging",
+            AutoCreateSqlTable = true
+        };
+        var columnOptions = new ColumnOptions();
+        columnOptions.Store.Remove(StandardColumn.TimeStamp);
+        columnOptions.Store.Add(StandardColumn.LogEvent);
+        columnOptions.LogEvent.DataLength = 2048;
+        var logger = new LoggerConfiguration()
+            .WriteTo.MSSqlServer(
+                connectionString: connectionString,
+                sinkOptions: sink,
+                columnOptions: columnOptions);
 
-        builder.Host.UseSerilog();
-
+        if (isOnlyLogger) builder.Host.UseSerilog((_, configuration) => configuration = logger);
+        else builder.Logging.AddSerilog(logger.CreateLogger());
         return builder;
-    }
+
+    }
 }

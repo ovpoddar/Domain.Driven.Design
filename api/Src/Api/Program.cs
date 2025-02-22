@@ -3,7 +3,7 @@ using DDD.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.AddDatabaseLogging(configuration);
+builder.AddDatabaseLogging();
 
 builder.Services
     .AddApiServicesConfiguration(configuration)

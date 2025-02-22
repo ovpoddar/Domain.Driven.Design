@@ -12,8 +12,8 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration configuration, string? migrationAssemblyName = null)
     {
-        var sqlConnectionString = configuration.GetConnectionString("msSQLDb")
-            ?? throw new ApplicationException("msSQLDb connection propriety is not found in appsettings.json file.");
+        var sqlConnectionString = configuration.GetConnectionString("msSQLDbConnection")
+            ?? throw new ApplicationException("msSQLDbConnection connection propriety is not found in appsettings.json file.");
         service.AddDbContext<ApplicationDbContext>(option =>
         {
             option.UseSqlServer(sqlConnectionString,

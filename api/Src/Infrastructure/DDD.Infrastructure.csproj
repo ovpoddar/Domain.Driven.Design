@@ -21,6 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Database\Configuration\" />
 		<Folder Include="Database\Repositories\" />
 	</ItemGroup>
 
