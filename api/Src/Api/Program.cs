@@ -20,5 +20,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseCors();
+app.UseExceptionHandler();
 app.MapControllers();
 app.Run();
