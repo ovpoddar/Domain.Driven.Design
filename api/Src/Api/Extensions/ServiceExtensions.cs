@@ -1,5 +1,7 @@
-﻿using Serilog;
+﻿using DDD.Domain.Infrastructure;
+using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using System;
 using System.Configuration;
 
 namespace DDD.Api.Extensions;
@@ -9,6 +11,25 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddApiServicesConfiguration(this IServiceCollection service, IConfiguration configuration)
     {
+        var origin = configuration.GetSection("App").GetValue<string>("UiApplicationUrl");
+        if (!string.IsNullOrWhiteSpace(origin) && origin.Split(',').Length > 0)
+        {
+            var origins = origin.Split(',');
+            service.AddCors(o =>
+            {
+                o.AddDefaultPolicy(p => p.WithOrigins(origins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
+                o.AddPolicy(CrossOriginConstants.AllowAllRequests, p => p.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
+                o.AddPolicy(CrossOriginConstants.AllowAnyPostRequests, p => p.WithOrigins(origins)
+                    .AllowAnyHeader()
+                    .WithMethods("Post"));
+            });
+        }
 
         return service;
     }
@@ -44,5 +65,6 @@ public static class ServiceExtensions
         else builder.Logging.AddSerilog(logger.CreateLogger());
         return builder;
 
-    }
+    }
+
 }
