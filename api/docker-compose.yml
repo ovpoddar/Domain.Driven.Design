@@ -28,6 +28,13 @@ services:
       SA_PASSWORD: "Pa55w0rd!."
     networks:
     - connect
+
+  ddd.redis:
+    image: "redis:latest"
+    ports:
+    - "9003:6379"
+    networks:
+    - connect
     
 networks:
   connect:

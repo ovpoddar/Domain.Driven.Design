@@ -1,10 +1,14 @@
 ﻿using DDD.Application.Abstractions.Database;
+using DDD.Application.Abstractions.Redis;
+using DDD.Infrastructure.Configuration;
 using DDD.Infrastructure.Database;
+using DDD.Infrastructure.Redis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace DDD.Infrastructure;
 
@@ -24,6 +28,15 @@ public static class ServiceExtensions
         service.AddScoped(typeof(IDatabaseConnectionBase<>), typeof(DatabaseConnectionBase<>));
         service.RegisterRepositories();
 
+        var redisConnectionString = configuration.GetConnectionString("RedisConnection")
+            ?? throw new ApplicationException("RedisConnection connection propriety is not found in appsettings.json file.");
+        service.Configure<DistributedCacheEntryOptions>(configuration.GetConfiguration("Redis"));
+        service.AddSingleton<IConnectionMultiplexer>(m => ConnectionMultiplexer.Connect(redisConnectionString));
+        service.AddStackExchangeRedisCache(option =>
+        {
+            option.Configuration = redisConnectionString;
+        });
+        service.AddScoped<IRedisCache, RedisCache>();
         return service;
     }
 
