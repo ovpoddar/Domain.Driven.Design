@@ -41,7 +41,6 @@ public static class ServiceExtensions
         service
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
-        // todo:Fix this line adding the GlobalExceptionErrorHandling which should stop the processing
         service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
@@ -79,6 +78,12 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddErrorHandlingPipeLine(this IServiceCollection service)
     {
+        var existingGlobalExceptionErrorHandling = service.FirstOrDefault(a => a.Lifetime == ServiceLifetime.Singleton
+            && a.ServiceType == typeof(IExceptionHandler)
+            && a.ImplementationType == typeof(GlobalExceptionErrorHandling));
+        if (existingGlobalExceptionErrorHandling is not null)
+            service.Remove(existingGlobalExceptionErrorHandling);
+
         service.AddExceptionHandler<GlobalExceptionErrorHandling>();
         service.AddProblemDetails();
         return service;
