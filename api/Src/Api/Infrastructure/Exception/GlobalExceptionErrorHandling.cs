@@ -5,6 +5,12 @@ using System.Net;
 
 namespace DDD.Api.Infrastructure.Exception;
 
+/// <summary>
+/// This exception handler is registered last. For custom handlers, you can add them which will be 
+/// registered automatically. these custom handlers will be registered in the order they are discovered 
+/// by reflection. However, this handler is not affected by reflection discovery and is always 
+/// registered last.
+/// </summary>
 public class GlobalExceptionErrorHandling : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionErrorHandling> _logger;
