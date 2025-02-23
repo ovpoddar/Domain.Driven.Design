@@ -4,6 +4,7 @@ using DDD.Application.Exceptions;
 using DDD.Infrastructure.Configuration;
 using DDD.Infrastructure.Database;
 using DDD.Infrastructure.Redis;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,10 @@ public static class ServiceExtensions
         });
         service.AddScoped<IRedisCache, RedisCache>();
         service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
+
+
+        service.AddIdentityApiEndpoints<IdentityUser>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
         return service;
     }
 

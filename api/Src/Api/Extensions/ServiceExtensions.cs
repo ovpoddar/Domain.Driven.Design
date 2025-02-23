@@ -6,6 +6,7 @@ using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Reflection;
 using DDD.Application.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace DDD.Api.Extensions;
 
@@ -41,6 +42,8 @@ public static class ServiceExtensions
         service
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
+        service.AddAuthentication();
+        service.AddAuthorization();
         service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }

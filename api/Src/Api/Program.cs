@@ -2,6 +2,7 @@ using DDD.Api.Extensions;
 using DDD.Application;
 using DDD.Infrastructure;
 using DDD.Presentation;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -19,6 +20,9 @@ builder.Services.AddErrorHandlingPipeLine();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseAuthentication();
+app.MapIdentityApi<IdentityUser>();
 app.UseCors();
 app.UseExceptionHandler();
 app.MapControllers();
