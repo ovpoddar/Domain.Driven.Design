@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder();
-builder.Services.AddInfrastructure(builder.Configuration, typeof(DDD.Migrator.IAssemblyMarker).Assembly.GetName().Name);
+builder.Services.AddInfrastructure(builder.Configuration, typeof(DDD.Migrator.IAssemblyMarker).Assembly);
 var app = builder.Build();
 
 var applicationDbContext = app.Services.GetRequiredService<ApplicationDbContext>();

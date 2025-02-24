@@ -11,19 +11,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace DDD.Infrastructure;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration configuration, string? migrationAssemblyName = null)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration configuration, Assembly? migrationAssemblyName = null)
     {
         var sqlConnectionString = configuration.GetConnectionString("msSQLDbConnection")
             ?? throw new ApplicationException("msSQLDbConnection connection propriety is not found in appsettings.json file.");
         service.AddDbContext<ApplicationDbContext>(option =>
         {
             option.UseSqlServer(sqlConnectionString,
-                string.IsNullOrWhiteSpace(migrationAssemblyName)
+                migrationAssemblyName is null
                     ? null
                     : a => a.MigrationsAssembly(migrationAssemblyName));
         });
