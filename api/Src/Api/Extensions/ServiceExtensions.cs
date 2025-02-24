@@ -42,7 +42,6 @@ public static class ServiceExtensions
         service
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
-        service.AddAuthentication();
         service.AddAuthorization();
         service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
         return service;

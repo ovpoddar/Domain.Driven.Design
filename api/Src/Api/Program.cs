@@ -20,8 +20,8 @@ builder.Services.AddErrorHandlingPipeLine();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
-app.UseAuthentication();
 app.MapIdentityApi<IdentityUser>();
 app.UseCors();
 app.UseExceptionHandler();
