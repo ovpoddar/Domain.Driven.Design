@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Presentation.Construct;
+namespace DDD.Presentation.Hubs.Construct;
 
 public class SignalRConnection<T, TJ> : IHubConnection<T> where T : class where TJ : Hub<T>
 {

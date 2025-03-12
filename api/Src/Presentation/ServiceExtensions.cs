@@ -1,6 +1,6 @@
 ﻿using DDD.Application.Abstractions.Hub;
-using DDD.Presentation.Construct;
 using DDD.Presentation.Hubs;
+using DDD.Presentation.Hubs.Construct;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
