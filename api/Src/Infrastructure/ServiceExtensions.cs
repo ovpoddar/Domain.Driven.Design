@@ -40,7 +40,7 @@ public static class ServiceExtensions
             option.Configuration = redisConnectionString;
         });
         service.AddScoped<IRedisCache, RedisCache>();
-        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
+        service.RegisterExceptionHandlers(typeof(IAssemblyMarker).Assembly);
 
 
         service.AddIdentityApiEndpoints<IdentityUser>()

@@ -26,4 +26,5 @@ app.MapIdentityApi<IdentityUser>();
 app.UseCors();
 app.UseExceptionHandler();
 app.MapControllers();
+app.UseHubs();
 app.Run();

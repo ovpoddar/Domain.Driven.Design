@@ -43,7 +43,7 @@ public static class ServiceExtensions
             .AddControllers()
             .AddApplicationPart(typeof(Presentation.IAssemblyMarker).Assembly);
         service.AddAuthorization();
-        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
+        service.RegisterExceptionHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
 

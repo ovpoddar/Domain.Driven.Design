@@ -11,7 +11,7 @@ namespace DDD.Application.Exceptions;
 
 public static class ExceptionHandlerRegister
 {
-    public static void RegisterHandlers(this IServiceCollection service, Assembly assembly)
+    public static void RegisterExceptionHandlers(this IServiceCollection service, Assembly assembly)
     {
         var handlers = assembly.GetTypes()
             .Where(a => a.IsClass

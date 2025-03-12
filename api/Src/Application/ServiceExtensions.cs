@@ -16,7 +16,7 @@ public static class ServiceExtensions
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         service.AddValidatorsFromAssembly(typeof(IAssemblyMarker).Assembly);
-        service.RegisterHandlers(typeof(IAssemblyMarker).Assembly);
+        service.RegisterExceptionHandlers(typeof(IAssemblyMarker).Assembly);
         return service;
     }
 }

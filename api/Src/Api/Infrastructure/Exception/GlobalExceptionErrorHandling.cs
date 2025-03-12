@@ -11,6 +11,7 @@ namespace DDD.Api.Infrastructure.Exception;
 /// by reflection. However, this handler is not affected by reflection discovery and is always 
 /// registered last.
 /// </summary>
+// TODO: make sure the order can't be violated.
 public class GlobalExceptionErrorHandling : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionErrorHandling> _logger;

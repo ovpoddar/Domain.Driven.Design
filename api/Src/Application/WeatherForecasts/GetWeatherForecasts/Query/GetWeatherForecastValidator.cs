@@ -7,7 +7,7 @@ public sealed class GetWeatherForecastValidator : AbstractValidator<GetWeatherFo
 {
     public GetWeatherForecastValidator()
     {
-        RuleFor(a => a.name)
+        RuleFor(a => a.Name)
             .NotEmpty();
     }
 }
@@ -16,11 +16,10 @@ public sealed class GetWeatherForecastValidator2 : AbstractValidator<GetWeatherF
 {
     public GetWeatherForecastValidator2()
     {
-        RuleFor(a => a.name)
+        RuleFor(a => a.Name)
             .MustAsync((a, b) =>
             {
-                return Task.FromResult(false);
-            })
-            .NotEmpty();
+                return Task.FromResult(a.Length > 2);
+            });
     }
 }

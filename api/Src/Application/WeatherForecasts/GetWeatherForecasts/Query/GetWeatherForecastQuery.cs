@@ -3,4 +3,4 @@ using MediatR;
 
 namespace DDD.Application.WeatherForecasts.GetWeatherForecasts.Query;
 
-public record GetWeatherForecastsQuery(string name) : IRequest<IEnumerable<WeatherForecast>>;
+public record GetWeatherForecastsQuery(string Name) : IRequest<IEnumerable<WeatherForecast>>;
